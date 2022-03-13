@@ -16,12 +16,14 @@ public:
         if(small.top() >= num) small.push(num);
         else big.push(num);
         if(small.size() > big.size() + 1){
-            big.push(small.top());
+            int a = small.top();
             small.pop();
+            big.push(a);
         }
         if(small.size() + 1 < big.size()){
-            small.push(big.top());
+            int b = big.top();
             big.pop();
+            small.push(b);
         }
         len++;
     }
