@@ -13,7 +13,11 @@ public:
             }
             r = index;
         }
-        
+        int index = r;
+        while(stk.size() && index < n && popped[index] == stk.top()){
+            index++;
+            stk.pop();
+        }
         return stk.empty() && l == n && r == n;
     }
 };
