@@ -1,71 +1,71 @@
-struct LinkedList{
+struct L{
     int key, value;
-    LinkedList* pre;
-    LinkedList* next;
-    LinkedList(): key(0), value(0), pre(nullptr), next(nullptr){}
-    LinkedList(int _key, int _value): key(_key), value(_value), pre(nullptr), next(nullptr){}
+    L* pre;
+    L* next;
+    L(): key(0), value(0), pre(nullptr), next(nullptr){}
+    L(int _key, int _value): key(_key), value(_value), pre(nullptr), next(nullptr){}
 };
 class LRUCache {
-private:
-    unordered_map<int, LinkedList*> cache;
-    LinkedList* head;
-    LinkedList* tail;
-    int size;
-    int capacity;
 public:
+    unordered_map<int, L*> cache;
+    int capacity;
+    int size;
+    L* head;
+    L* tail;
     LRUCache(int _capacity): capacity(_capacity), size(0) {
-        head = new LinkedList();
-        tail = new LinkedList();
+        head = new L();
+        tail = new L();
         head->next = tail;
         tail->pre = head;
     }
     
     int get(int key) {
         if(!cache.count(key)) return -1;
-        LinkedList* node = cache[key];
-        movetoHead(node);
+        L* node = cache[key];
+        movetohead(node);
         return node->value;
     }
     
     void put(int key, int value) {
-        if(cache.count(key)){
-            LinkedList* node = cache[key];
-            node->value = value;
-            movetoHead(node);
-        }
-        else{
-            LinkedList* node = new LinkedList(key, value);
+        if(!cache.count(key)){
+            L* node = new L(key, value);
+            addtohead(node);
             cache[key] = node;
-            addToHead(node); 
             size++;
             if(size > capacity){
-                LinkedList* t = removeTail();
+                L* t = removetail();
                 cache.erase(t->key);
                 delete t;
                 size--;
             }
         }
+        else{
+            L* t = cache[key];
+            t->value = value;
+            movetohead(t);
+        }
     }
     
-    void addToHead(LinkedList* node){
-        node->pre = head;
+    void movetohead(L* node){
+        removenode(node);
+        addtohead(node);
+    }
+    
+    void addtohead(L* node){
         node->next = head->next;
         head->next->pre = node;
+        node->pre = head;
         head->next = node;
     }
-        
-    void movetoHead(LinkedList* node){
-        removeNode(node);
-        addToHead(node);
+    
+    void removenode(L* node){
+        node->next->pre = node->pre;
+        node->pre->next = node->next;
     }
     
-    void removeNode(LinkedList* node){
-        node->pre->next = node->next;
-        node->next->pre = node->pre;
-    }
-    LinkedList* removeTail(){
-        LinkedList* node = tail->pre;
-        removeNode(node);
+    L* removetail(){
+        L* node = tail->pre;
+        removenode(node);
         return node;
     }
 };
