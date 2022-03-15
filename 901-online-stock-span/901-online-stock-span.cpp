@@ -1,20 +1,17 @@
 class StockSpanner {
 public:
-    stack<int> prices;
-    stack<int> days;
+    stack<pair<int, int>> stk;
     StockSpanner() {
         
     }
     
     int next(int price) {
         int day = 1;
-        while(prices.size() && prices.top() <= price){
-            day += days.top();
-            days.pop();
-            prices.pop();
+        while(stk.size() && stk.top().first <= price){
+            day += stk.top().second;
+            stk.pop();
         }
-        prices.push(price);
-        days.push(day);
+        stk.push({price, day});
         return day;
     }
 };
