@@ -2,20 +2,20 @@ class Solution {
 public:
     string reverseVowels(string s) {
         int l = 0, r = s.size() - 1;
-        unordered_map<char, int> cache;
-        cache['a'] = 1, cache['e'] = 1, cache['i'] = 1, cache['o'] = 1, cache['u'] = 1;
-        cache['A'] = 1, cache['E'] = 1, cache['I'] = 1, cache['O'] = 1, cache['U'] = 1;
+        set<char> cache;
+        cache.insert('a'),cache.insert('e'),cache.insert('i'),cache.insert('o'),cache.insert('u');
+        cache.insert('A'),cache.insert('E'),cache.insert('I'),cache.insert('O'),cache.insert('U');
         while(l < r){
             char a = s[l], b = s[r];
-            if(cache[a] == 1 && cache[b] == 1){
+            if(cache.count(a) == 1 && cache.count(b) == 1){
                 char i = s[l];
                 s[l] = s[r];
                 s[r] = i;
                 l++;
                 r--;
             }
-            else if(cache[a]) r--;
-            else if(cache[b]) l++;
+            else if(cache.count(a)) r--;
+            else if(cache.count(b)) l++;
             else l++, r--;
         }
         return s;
