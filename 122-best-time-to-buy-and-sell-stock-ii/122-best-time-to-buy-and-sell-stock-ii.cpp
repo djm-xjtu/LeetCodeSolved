@@ -1,15 +1,14 @@
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int profit = 0;
-        int min_val = 1e5;
-        for(int i : prices){
-            if(i < min_val) min_val =  i;
-            else{
-                profit += i - min_val;
-                min_val = i;
-            }
+        int n = prices.size();
+        int dp[n][2];
+        memset(dp, 0, sizeof dp);
+        dp[0][1] = -prices[0];
+        for(int i = 1; i < n; i++){
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i]);
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i]);
         }
-        return profit;
+        return dp[n-1][0];
     }
 };
