@@ -10,15 +10,12 @@
 
 class Solution {
 public:
-    TreeNode* lowestCommonAncestor(TreeNode* cur, TreeNode* p, TreeNode* q) {
+    TreeNode* lowestCommonAncestor(TreeNode* r, TreeNode* p, TreeNode* q) {
         while (1) {
-            if (p -> val < cur -> val && q -> val < cur -> val)
-                cur = cur -> left;
-            else if (p -> val > cur -> val && q -> val > cur -> val)
-                cur = cur -> right;
-            else
-                break;
+            if(p->val < r->val && q->val < r->val) r = r->left;
+            else if(p->val > r->val && q->val > r->val) r = r->right;
+            else break;
         }
-        return cur;
+        return r;
     }
 };
