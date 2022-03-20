@@ -17,9 +17,7 @@ public:
         }
         for(int i = 0; i < n; i++){
             if(vis[i]) continue;
-            if(i > 0 && nums[i] == nums[i-1] && !vis[i-1]){
-                continue;
-            }
+            if(i > 0 && nums[i-1] == nums[i] && !vis[i-1]) continue;
             vis[i] = 1;
             path.push_back(nums[i]);
             dfs(nums, u+1);
