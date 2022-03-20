@@ -1,25 +1,29 @@
 class Solution {
 public:
-    bool vis[10];
     vector<vector<int>> ans;
     vector<int> path;
+    bool vis[10];
+    int n;
     vector<vector<int>> permuteUnique(vector<int>& nums) {
+        n = nums.size();
         sort(nums.begin(), nums.end());
-        path = vector<int>(nums.size());
-        dfs(nums, 0, 0);
+        dfs(nums, 0);
         return ans;
     }
-    void dfs(vector<int>& nums, int index, int start){
-        if(index == nums.size()){
+    void dfs(vector<int>& nums, int u){
+        if(u == n){
             ans.push_back(path);
             return;
         }
-        for(int i = start; i < nums.size(); i++){
+        for(int i = 0; i < n; i++){
             if(vis[i]) continue;
+            if(i > 0 && nums[i] == nums[i-1] && !vis[i-1]){
+                continue;
+            }
             vis[i] = 1;
-            path[i] = nums[index];
-            if(index + 1 < nums.size() && nums[index+1] != nums[index]) dfs(nums, index+1, 0);
-            else dfs(nums, index+1, i+1);
+            path.push_back(nums[i]);
+            dfs(nums, u+1);
+            path.pop_back();
             vis[i] = 0;
         }
     }
