@@ -15,6 +15,7 @@ public:
             path.push_back(nums[i]);
             dfs(nums, i+1);
             path.pop_back();
+            
             while(i + 1 < n && nums[i] == nums[i+1]) ++i;
         }
     }
