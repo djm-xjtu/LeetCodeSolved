@@ -1,29 +1,22 @@
 class Solution {
 public:
     int ans;
-    vector<bool> row, col, diag, anti_diag;
     int totalNQueens(int n) {
-        row = col = vector<bool>(n, 0);
-        diag = anti_diag = vector<bool>(2 * n, 0);
-        dfs(0,0,0,n);
+        dfs(0,0,0,0,n);
         return ans;
     }
     
-    void dfs(int x, int y, int s, int n){
-        if(y == n) x ++, y = 0;
-        if(x == n){
-            if(s == n) ans++;
+    void dfs(int row, int col, int ld, int rd, int n){
+        if(row == n){
+            ans++;
             return;
         }
         
-        dfs(x, y+1, s, n);
-        
-        if(!row[x] && !col[y] && !diag[x + y] && !anti_diag[n - 1 - x + y]){
-            row[x] = col[y] = diag[x + y] = anti_diag[n - 1 - x + y] = 1;
-            
-            dfs(x, y+1, s+1, n);
-            
-            row[x] = col[y] = diag[x + y] = anti_diag[n - 1 - x + y] = 0;
+        int bits = ~(col | ld | rd) & ((1 << n) - 1);
+        while(bits > 0){
+            int pick = bits & -bits;
+            dfs(row+1, col | pick, (ld | pick) << 1, (rd | pick) >> 1, n);
+            bits &= (bits - 1);
         }
     }
 };
