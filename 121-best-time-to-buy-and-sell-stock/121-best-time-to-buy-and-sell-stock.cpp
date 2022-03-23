@@ -2,12 +2,14 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        int ans = 0;
-        int min_val = 1e6;
-        for(int i = 0; i < n; i++){
-            min_val = min(min_val, prices[i]);
-            ans = max(ans, prices[i] - min_val);
+        int dp[n][2]; // 0: no stock 1: hold stock
+        memset(dp, 0, sizeof dp);
+        dp[0][1] = -prices[0];
+        for(int i = 1; i < n; i++){
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i]);
+            dp[i][1] = max(dp[i-1][1], -prices[i]);
         }
-        return ans;
+        
+        return dp[n-1][0];
     }
 };
