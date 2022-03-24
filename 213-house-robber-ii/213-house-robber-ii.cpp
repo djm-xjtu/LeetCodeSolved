@@ -3,7 +3,6 @@ public:
     int rob(vector<int>& nums) {
         int n = nums.size();
         if(n == 1) return nums[0];
-        if(n == 2) return max(nums[0], nums[1]);
         int f1[n+1], f2[n+1], g1[n+1], g2[n+1];
         memset(f1, 0, sizeof f1);
         memset(f2, 0, sizeof f2);
