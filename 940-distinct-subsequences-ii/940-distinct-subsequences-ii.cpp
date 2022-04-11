@@ -14,7 +14,6 @@ public:
             }
             f[i] = (f[i] + mod) % mod; //安全取模
             last[s[i-1] - 'a']  = i - 1;
-            cout << f[i] - 1<< endl;
         }
         return (f[n] - 1 + mod) % mod;
     }
