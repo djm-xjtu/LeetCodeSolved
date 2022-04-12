@@ -22,6 +22,7 @@ public:
         dfs(root);
         TreeNode* a = nullptr;
         TreeNode* b = nullptr;
+        //逆序数一定是第一个逆序和最后一个逆序交换
         for(int i = 0; i < t.size() - 1; i++){
             if(t[i]->val > t[i+1]->val){
                 b = t[i+1];
