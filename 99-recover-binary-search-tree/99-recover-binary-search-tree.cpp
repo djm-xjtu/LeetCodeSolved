@@ -11,24 +11,23 @@
  */
 class Solution {
 public:
-    TreeNode* pre;
-    TreeNode* l;
-    TreeNode* r;
-    void inorder(TreeNode* ro){
-        if(ro == nullptr) return;
-        inorder(ro->left);
-        if(pre != nullptr && ro->val < pre->val){
-            if(l == nullptr) l = pre;
-            r = ro;
-        }
-        pre = ro;
-        inorder(ro->right);
+    vector<TreeNode*> t;
+    void dfs(TreeNode* r){
+        if(r == nullptr) return;
+        dfs(r->left);
+        t.push_back(r);
+        dfs(r->right);
     }
     void recoverTree(TreeNode* root) {
-        //only two nodes swapped
-        inorder(root);
-        int t = l->val;
-        l->val = r->val;
-        r->val = t;
+        dfs(root);
+        TreeNode* a = nullptr;
+        TreeNode* b = nullptr;
+        for(int i = 0; i < t.size() - 1; i++){
+            if(t[i]->val > t[i+1]->val){
+                b = t[i+1];
+                if(a == nullptr) a = t[i];
+            }
+        }
+        swap(a->val, b->val);
     }
 };
