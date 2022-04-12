@@ -11,15 +11,15 @@
  */
 class Solution {
 public:
-    vector<int> post;
+    vector<int> t;
+    void dfs(TreeNode* r){
+        if(r == nullptr) return;
+        dfs(r->left);
+        dfs(r->right);
+        t.push_back(r->val);
+    }
     vector<int> postorderTraversal(TreeNode* root) {
         dfs(root);
-        return post;
-    }
-    void dfs(TreeNode* root){
-        if(root == nullptr) return;
-        dfs(root->left);
-        dfs(root->right);
-        post.push_back(root->val);
+        return t;
     }
 };
