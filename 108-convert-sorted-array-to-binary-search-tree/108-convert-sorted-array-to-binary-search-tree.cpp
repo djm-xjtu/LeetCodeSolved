@@ -13,13 +13,13 @@ class Solution {
 public:
     TreeNode* dfs(vector<int>& nums, int left, int right){
         if(left > right) return nullptr;
-        int mid = (left + right) / 2;
-        TreeNode* r = new TreeNode(nums[mid]);
-        r->left = dfs(nums, left, mid - 1);
-        r->right = dfs(nums, mid + 1, right);
-        return r;
+        int mid = left + right >> 1;
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = dfs(nums, left, mid-1);
+        root->right = dfs(nums, mid+1, right);
+        return root;
     }
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return dfs(nums, 0, nums.size()-1);
+        return dfs(nums, 0, nums.size() - 1);
     }
 };
