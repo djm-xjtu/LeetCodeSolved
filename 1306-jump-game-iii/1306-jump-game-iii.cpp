@@ -12,10 +12,6 @@ public:
         return 0;
     }
     bool canReach(vector<int>& arr, int start) {
-        int n = 0;
-        for(auto i : arr){
-            if(i == 0) n++;
-        }
         return dfs(arr, start);
     }
 };
