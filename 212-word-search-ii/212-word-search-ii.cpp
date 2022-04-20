@@ -1,6 +1,5 @@
 class Solution {
 public:
-    //字典树优化DFS
     class Node{
         public:
         string s;
@@ -23,21 +22,19 @@ public:
     }
     int n, m;
     vector<string> path;
-    set<string> p;
-    bool vis[15][15];
     int dx[4] = {-1, 0, 1, 0}, dy[4] = {0, -1, 0, 1};
     void dfs(vector<vector<char>>& board, int x, int y, Node* node){
-        if(node->s.size()) p.insert(node->s);
+        if(x < 0 || x >= n || y < 0 || y >= m) return;
+        char t = board[x][y];
+        if(t == '*' || node->son[t-'a'] == nullptr) return;
+        node = node->son[t-'a'];
+        if(node->s.size()) path.push_back(node->s), node->s = "";
+        board[x][y] = '*';
         for(int i = 0; i < 4; i++){
             int nx = x + dx[i], ny = y + dy[i];
-            if(nx < 0 || nx >= n || ny < 0 || ny >= m || vis[nx][ny]) continue;
-            int t = board[nx][ny] - 'a';
-            if(node->son[t]){
-                vis[nx][ny] = 1;
-                dfs(board, nx, ny, node->son[t]);
-                vis[nx][ny] = 0;
-            }
+            dfs(board, nx, ny, node);
         }
+        board[x][y] = t;
     }
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
         n = board.size(), m = board[0].size();
@@ -47,14 +44,9 @@ public:
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 int t = board[i][j] - 'a';
-                if(root->son[t]){
-                    vis[i][j] = 1;
-                    dfs(board, i, j, root->son[t]);
-                    vis[i][j] = 0;
-                }
+                dfs(board, i, j, root);
             }
         }
-        for(auto i : p) path.push_back(i);
         return path;
     }
 };
