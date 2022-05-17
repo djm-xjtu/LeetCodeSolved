@@ -6,7 +6,6 @@ public:
         int n = changed.size();
         if(n & 1 || n == 0) return {};
         multiset<int> st;
-        multiset<int> t;
         for(int i = 0; i < n; i++) st.insert(changed[i]);
         while(st.size()){
             ans.push_back(*st.begin());
