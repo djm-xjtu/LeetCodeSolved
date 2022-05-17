@@ -3,6 +3,8 @@ public:
     vector<int> recoverArray(vector<int>& nums) {
         int n = nums.size();
         sort(nums.begin(), nums.end());
+        // first is lower[0], I assume that nums[i] is higher[i] and nums[i] is qualified, then we use two index to traverse the array
+        // to search, if we get wrong, we assume i+1 is higher[i] and search and so on...
         for(int i = 1; i < n; i++){
             if(nums[i] == nums[i-1]) continue;
             int d = nums[i] - nums[0];
