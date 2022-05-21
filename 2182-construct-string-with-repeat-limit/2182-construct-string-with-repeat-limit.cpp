@@ -1,37 +1,47 @@
 class Solution {
 public:
-    string repeatLimitedString(string s, int limit) {
-        unordered_map<char, int> h;
-        for(int i = 0; i < s.size(); i++){
-            h[s[i]]++;
+    string repeatLimitedString(string s, int k) { // k is the repeatLimit
+        int n = s.length();
+        unordered_map<char,int> m;
+        for(int i=0;i<n;i++){
+            m[s[i]]++;
         }
-        int count = 0;
-        string res = "";
-        while(count < s.size()){
-            int cnt = 0;
-            char chose;
-            bool f = 0, vis = 0;
-            for(char st = 'z'; st >= 'a'; st--){
-                if(h[st] > 0){
-                    chose = st;
-                    if(h[st] >= limit) cnt = limit, h[st] -= limit, count += limit;
-                    else cnt = h[st], h[st] = 0, count += h[st];
-                    if(h[st] == 0) f = 1;
-                    for(int i = 0; i < cnt; i++) res += st;
-                    break;
-                }
-            }
-            if(f) continue;
-            for(char st = chose - 1; st >= 'a'; st--){
-                if(h[st]){
-                    vis = 1;
-                    h[st]--, count++;
-                    res += st;
-                    break;
-                }
-            }
-            if(!vis) break;
+        priority_queue<pair<char,int>> pq;
+        for(auto i: m){
+            pq.push({i.first,i.second}); // pushing the characters with their frequencies.
         }
-        return res;
+        
+        string ans = "";
+        while(!pq.empty()){
+            char c1 = pq.top().first;
+            int n1 = pq.top().second;
+            pq.pop();
+                
+            int len = min(k,n1); // Adding characters upto minimum of repeatLimit and present character count.
+            for(int i=0;i<len;i++){ // adding the highest priority element to the ans.
+                ans += c1;
+            }
+            
+            char c2;
+            int n2=0;
+            if(n1-len>0){ // If the cnt of present character is more than the limit.
+                if(!pq.empty()){ //Getting the next priority character.
+                    c2 = pq.top().first;
+                    n2 = pq.top().second;
+                    pq.pop();
+                }
+                else{
+                    return ans; // if there is no another letter to add, we just return ans.
+                }
+                ans += c2; // Adding next priority character to ans.
+                
+                // If the elements are left out, pushing them back into priority queue for next use.
+                pq.push({c1,n1-len});
+                if(n2-1>0){
+                    pq.push({c2,n2-1});
+                } 
+            }
+        }
+        return ans;
     }
 };
