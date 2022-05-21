@@ -1,20 +1,24 @@
+const int mod = 1e9 + 7;
 class Solution {
 public:
     int distinctSubseqII(string s) {
-        long long f[2010], n = s.size(), mod = 1e9 + 7;
-        memset(f, 0, sizeof f);
-        f[0] = 1;
-        int last[26];
-        for(int i = 0; i < 26; i++) last[i] = -1;
-        for(int i = 1; i <= n; i++){
-            f[i] = 2*f[i-1]; 
-            int cur = last[s[i-1] - 'a'];
-            if(cur >= 0){
-                f[i] -= f[cur];
+        int n = s.size();
+        vector<long long> f(26);
+        long long res = 0;
+        for(int i = 0; i < n; i++){
+            int t = s[i] - 'a';
+            long long cnt = 0;
+            for(int j = 0; j < 26; j++){
+                cnt += f[j];
+                cnt = cnt % mod;
             }
-            f[i] = (f[i] + mod) % mod; //安全取模
-            last[s[i-1] - 'a']  = i - 1;
+            //接在以前的所有子序列后面：cnt，不接在任何子序列后面，自己形成一个子序列
+            f[t] = (cnt + 1) % mod;
         }
-        return (f[n] - 1 + mod) % mod;
+        for(int i = 0; i < 26; i++){
+            res += f[i];
+            res %= mod;
+        }
+        return res;
     }
 };
