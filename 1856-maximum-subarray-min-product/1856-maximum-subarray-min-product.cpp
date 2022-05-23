@@ -2,6 +2,8 @@ const int mod = 1e9 + 7;
 class Solution {
 public:
     int maxSumMinProduct(vector<int>& nums) {
+        nums.insert(nums.begin(), 0);
+        nums.push_back(0);
         int n = nums.size();
         vector<long long> f(n);
         stack<int> stk;
@@ -16,13 +18,6 @@ public:
             }
             stk.push(i);
             f[i] = sum + nums[i];
-        }
-        long long sum = 0;
-        while(stk.size()){
-            int t = stk.top();
-            stk.pop();
-            sum += f[t];
-            ans = max(ans, sum * nums[t]);
         }
         return ans % mod;
     }
