@@ -2,6 +2,7 @@ const int mod = 1e9 + 7;
 class Solution {
 public:
     int maxSumMinProduct(vector<int>& nums) {
+        //加两个哨兵
         nums.insert(nums.begin(), 0);
         nums.push_back(0);
         int n = nums.size();
@@ -18,6 +19,15 @@ public:
             }
             stk.push(i);
             f[i] = sum + nums[i];
+        }
+        long long sum = 0;
+        cout << stk.size();
+        //或者最后处理没有出栈的元素
+        while(stk.size()){
+            int t = stk.top();
+            stk.pop();
+            sum += f[t];
+            ans = max(ans, sum * nums[t]);
         }
         return ans % mod;
     }
