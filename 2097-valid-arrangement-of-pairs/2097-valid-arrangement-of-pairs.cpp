@@ -1,8 +1,8 @@
 class Solution {
 public:
     vector<vector<int>> ans;
-    map<int, vector<int>> h;
-    map<int, int> deg;
+    unordered_map<int, vector<int>> h;
+    unordered_map<int, int> deg;
     void dfs(int st){
         vector<int>& g = h[st];
         while(!g.empty()){
