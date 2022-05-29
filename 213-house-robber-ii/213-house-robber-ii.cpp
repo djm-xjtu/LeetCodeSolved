@@ -3,22 +3,18 @@ public:
     int rob(vector<int>& nums) {
         int n = nums.size();
         if(n == 1) return nums[0];
-        int f1[n+1], f2[n+1], g1[n+1], g2[n+1];
-        memset(f1, 0, sizeof f1);
-        memset(f2, 0, sizeof f2);
-        memset(g1, 0, sizeof g1);
-        memset(g2, 0, sizeof g2);
-        
-        for(int i = 1; i < n; i++){
-            f1[i] = max(f1[i-1], g1[i-1]);
-            g1[i] = f1[i-1] + nums[i-1];
+        vector<vector<int>> f(n + 1, vector<int>(2, 0));
+        vector<vector<int>> g(n + 1, vector<int>(2, 0));
+        for(int i = 1; i <= n - 1; i++){
+            f[i][0] = max(f[i-1][0], f[i-1][1]);
+            f[i][1] = f[i-1][0] + nums[i-1];
         }
-        
+        int ans = max(f[n-1][0], f[n-1][1]);
         for(int i = 2; i <= n; i++){
-            f2[i] = max(f2[i-1], g2[i-1]);
-            g2[i] = f2[i-1] + nums[i-1];
+            g[i][0] = max(g[i-1][0], g[i-1][1]);
+            g[i][1] = g[i-1][0] + nums[i-1];
         }
-        
-        return max(max(f1[n-1],g1[n-1]), max(f2[n], g2[n]));
+        ans = max(ans, max(g[n][0], g[n][1]));
+        return ans;
     }
 };
