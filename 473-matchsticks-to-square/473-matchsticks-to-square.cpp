@@ -1,38 +1,32 @@
+#define getBit(x, n) ((x >> n) & 1)
+#define setBit(x, n) (x | (1 << n))
 class Solution {
 public:
-    vector<bool> vis;
-    bool makesquare(vector<int>& matchsticks) {
-        int sum = 0;
-        if(matchsticks.size() < 4) return 0;
-        for(int i = 0; i < matchsticks.size(); i++){
-            sum += matchsticks[i];
+    vector<int> d;
+    long cnt;
+    bool dfs(vector<int>& m, int state, int sum){
+        bool ans = 0;
+        if(d[state] != -1) return d[state];
+        for(int i = 0; i < m.size(); i++){
+            if(!getBit(state, i) && sum + m[i] <= cnt){
+                int new_sum = (sum + m[i]) % cnt;
+                if(dfs(m, setBit(state, i), new_sum)){
+                    ans = 1;
+                    break;
+                }
+            }
         }
-        if(sum % 4) return 0;
-        int side = sum / 4;
-        sort(matchsticks.begin(), matchsticks.end(), greater<int>());
-        vis.resize(matchsticks.size());
-        return dfs(matchsticks, 0, side, 0, 0);
+        d[state] = ans;
+        return ans;
     }
-    
-    bool dfs(vector<int>& matchsticks, int sum, int target, int k, int start){
-        if(k == 4) return 1;
-        if(sum == target){
-            return dfs(matchsticks, 0, target, k+1, 0);
-        }
-        for(int i = start; i < matchsticks.size(); i++){
-            if(sum + matchsticks[i] > target){
-                continue;
-            }
-            
-            if(!vis[i]){
-                vis[i] = 1;
-                if(dfs(matchsticks, sum + matchsticks[i], target, k, i + 1))
-                    return 1;
-                vis[i] = 0;
-                if(sum == 0) return 0;
-                if(sum + matchsticks[i] == target) return 0;
-            }
-        }
-        return 0;
+    bool makesquare(vector<int>& matchsticks) {
+        int n = matchsticks.size();
+        d.resize(1 << n, -1);
+        d[(1 << n) - 1] = 1;
+        for(int i : matchsticks)
+            cnt += i;
+        if(cnt % 4) return false;
+        cnt /= 4;
+        return dfs(matchsticks, 0, 0);
     }
 };
