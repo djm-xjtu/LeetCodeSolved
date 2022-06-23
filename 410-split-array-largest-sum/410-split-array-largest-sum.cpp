@@ -1,27 +1,22 @@
 class Solution {
 public:
     int splitArray(vector<int>& nums, int m) {
-        long l = nums[0], r = 0;
-        for(auto i : nums){
-            l = l > i ? l : i;
-            r += i;
+        int n = nums.size();
+        int f[n+1][m+1];
+        memset(f, 0x3f, sizeof f);
+        f[0][0] = 0;
+        int sum[n+1];
+        sum[0] = 0;
+        for(int i = 0; i < n; i++){
+            sum[i+1] = sum[i] + nums[i];
         }
-        while(l < r){
-            long mid = l + r >> 1;
-            long tmp = 0;
-            int cnt = 1;
-            for(auto i : nums){
-                tmp += i;
-                if(tmp > mid){
-                    ++cnt;
-                    tmp = i;
+        for(int i = 1; i <= n; i++){
+            for(int k = 1; k <= min(i,m); k++){
+                for(int j = i; j >= k; j--){
+                    f[i][k] = min(f[i][k], max(f[j-1][k-1], sum[i] - sum[j-1]));
                 }
             }
-            
-            if(cnt <= m) r = mid;
-            else l = mid + 1;
         }
-        
-        return l;
+        return f[n][m];
     }
 };
