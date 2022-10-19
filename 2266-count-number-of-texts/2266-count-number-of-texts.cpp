@@ -1,19 +1,25 @@
-const int mod = 1e9 + 7;
 class Solution {
 public:
-    int countTexts(string p) {
-        int n = p.size();
-        vector<int> f(n+1);
-        p = ' ' + p;
+    int countTexts(string pressedKeys) {
+        int mod = 1e9 + 7;
+        int n = pressedKeys.size();
+        long f[n+1];
+        memset(f, 0, sizeof f);
         f[0] = 1;
+        pressedKeys = " " + pressedKeys;
         for(int i = 1; i <= n; i++){
             f[i] = f[i-1];
-            if(i >= 2 && p[i-1] == p[i])
+            auto idx = pressedKeys[i];
+            if(i - 2 >= 0 && pressedKeys[i-1] == pressedKeys[i]){
                 f[i] = (f[i] + f[i-2]) % mod;
-            if(i >= 3 && p[i-2] == p[i-1] && p[i-2] == p[i])
+            }
+            if(i - 3 >= 0 && pressedKeys[i-2] == pressedKeys[i-1] && pressedKeys[i-1] == pressedKeys[i]){
                 f[i] = (f[i] + f[i-3]) % mod;
-            if(i >= 4 && p[i-3] == p[i-2] && p[i-3] == p[i-1] && p[i-3] == p[i] && (p[i] == '7' || p[i] == '9'))
+            }
+            if(i - 4 >= 0 && pressedKeys[i-3] == pressedKeys[i-2] && pressedKeys[i-2] == pressedKeys[i-1] && pressedKeys[i-1] == pressedKeys[i] 
+              && (idx == '7' || idx == '9')) {
                 f[i] = (f[i] + f[i-4]) % mod;
+            }
         }
         return f[n];
     }
